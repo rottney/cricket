@@ -29,8 +29,16 @@ ol, ul {
   margin-top: -1px;
   padding: 0;
   text-align: center;
-  /*width: 34px;*/
-  width: 55px;
+  /*width: 55px;*/
+  width: 120px;
+}
+
+.score{
+  display: inline-block;
+  font-size: 18px;
+  margin-bottom: 10px;
+  text-align: center;
+  width: 120px;
 }
 
 .square:focus {

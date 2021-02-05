@@ -131,15 +131,6 @@ class Board extends React.Component {
     );
   }
 
-  /*declareWinner(player1Won, player2Won) {
-    if (player1Won === true) {
-      return <div className="status">Player 1 won.</div>
-    }
-    if (player2Won === true) {
-      return <div className="status">Player 2 won.</div>
-    }
-  }*/
-
   renderSquare(i) {
     return (
       <Square 
@@ -155,7 +146,8 @@ class Board extends React.Component {
 
     return (
       <div>
-        <div className="status">{header}</div>
+        <div className="score">Player 1</div>
+        <div className="score">Player 2</div>
         <div className="board-row">
           {this.renderSquare(0)}
           &emsp; 20
@@ -191,9 +183,10 @@ class Board extends React.Component {
           &emsp; B
           {this.renderSquare(13)}
         </div>
-        <div className="status">
+        <div className="score">
           {this.state.player1Score}
-          &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+        </div>
+        <div className="score">
           {this.state.player2Score}
         </div>
         <div className="status">
