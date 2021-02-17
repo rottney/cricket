@@ -26,12 +26,12 @@ class Board extends React.Component {
 
   handleClick(i) {
     const squares = this.state.squares.slice();
-    var player1Score = this.state.player1Score;
-    var player2Score = this.state.player2Score;
-    var player1ClosedAll = this.state.player1ClosedAll;
-    var player2ClosedAll = this.state.player2ClosedAll;
-    var player1Won = this.state.player1Won;
-    var player2Won = this.state.player2Won;
+    let player1Score = this.state.player1Score;
+    let player2Score = this.state.player2Score;
+    let player1ClosedAll = this.state.player1ClosedAll;
+    let player2ClosedAll = this.state.player2ClosedAll;
+    let player1Won = this.state.player1Won;
+    let player2Won = this.state.player2Won;
 
     if (this.state.squares[i] === null) {
       squares[i] = "/";
@@ -107,17 +107,6 @@ class Board extends React.Component {
       }
     }
 
-    // this too..
-    player1Won = false;
-    if (player1ClosedAll && player1Score > player2Score) {
-      player1Won = true;
-    }
-
-    player2Won = false;
-    if (player2ClosedAll && player2Score > player1Score) {
-      player2Won = true;
-    }
-
     this.setState(
       {
         squares: squares,
@@ -141,8 +130,7 @@ class Board extends React.Component {
   }
 
   render() {
-    const header = 'Player 1\tPlayer 2';
-    var winner = declareWinner(this.state.player1Won, this.state.player2Won);
+    const winner = declareWinner(this.state.player1ClosedAll, this.state.player2ClosedAll, this.state.player1Score, this.state.player2Score);
 
     return (
       <div>
@@ -220,12 +208,14 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-function declareWinner(player1Won, player2Won) {
-  if (player1Won === true) {
-    return "Player 1 won.";
+function declareWinner(player1ClosedAll, player2ClosedAll, player1Score, player2Score) {
+  if (player1ClosedAll === true && player1Score >= player2Score) {
+    return "Player 1 wins.";
   }
-  if (player2Won === true) {
-    return "Player 2 won.";
+
+  if (player2ClosedAll === true && player2Score >= player1Score) {
+    return "Player 2 wins.";
   }
+
   return "";
 }
