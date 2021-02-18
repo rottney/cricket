@@ -132,11 +132,11 @@ class Board extends React.Component {
 
   render() {
     // THIS WILL BE IN STATE
-    const numPlayers = 2;
+    const NUM_PLAYERS = 2;
 
     // Generate team names
     let teamNames = [];
-    for (let i = 1; i <= numPlayers; i++) {
+    for (let i = 1; i <= NUM_PLAYERS; i++) {
       teamNames.push(<div className="score">Player {i}</div>);
     }
 
@@ -148,8 +148,8 @@ class Board extends React.Component {
       row.push(
         <div>
           {this.renderSquare(2*i)}
-          &emsp; {20 - i}
           {this.renderSquare(2*i + 1)}
+          &emsp; {20 - i}
         </div>
       );
 
@@ -160,8 +160,8 @@ class Board extends React.Component {
       row.push(
         <div>
           {this.renderSquare(2*i)}
-          &emsp; B
           {this.renderSquare(2*i + 1)}
+          &emsp; B
         </div>
       );
 
