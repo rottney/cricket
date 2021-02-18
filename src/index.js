@@ -131,8 +131,16 @@ class Board extends React.Component {
   }
 
   render() {
-    const winner = declareWinner(this.state.player1ClosedAll, this.state.player2ClosedAll, this.state.player1Score, this.state.player2Score);
+    // THIS WILL BE IN STATE
+    const numPlayers = 2;
 
+    // Generate team names
+    let teamNames = [];
+    for (let i = 1; i <= numPlayers; i++) {
+      teamNames.push(<div className="score">Player {i}</div>);
+    }
+
+    // Generate board
     let board = [];
 
     for (let i = 0; i < 6; i++) {
@@ -145,7 +153,7 @@ class Board extends React.Component {
         </div>
       );
 
-      board.push(<div className='board-row'>{row}</div>);
+      board.push(<div className="board-row">{row}</div>);
     }
     for (let i = 6; i < 7; i++) {
       let row = [];
@@ -157,25 +165,27 @@ class Board extends React.Component {
         </div>
       );
 
-      board.push(<div className='board-row'>{row}</div>)
+      board.push(<div className="board-row">{row}</div>)
     }
+
+    // Generate scores
+    let scores = [];
+    scores.push(<div className="score">{this.state.player1Score}</div>);
+    scores.push(<div className="score">{this.state.player2Score}</div>);
+
+    // Determine winner
+    const winner = (
+      <div className="status">
+        {declareWinner(this.state.player1ClosedAll, this.state.player2ClosedAll, this.state.player1Score, this.state.player2Score)}
+      </div>
+    );
 
     return(
       <div>
-        <div className="score">Player 1</div>
-        <div className="score">Player 2</div>
-
+        <div>{teamNames}</div>
         <div>{board}</div>
-
-        <div className="score">
-          {this.state.player1Score}
-        </div>
-        <div className="score">
-          {this.state.player2Score}
-        </div>
-        <div className="status">
-          {winner}
-        </div>
+        <div>{scores}</div>
+        <div>{winner}</div>
       </div>
     );
   }
