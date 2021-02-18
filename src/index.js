@@ -10,6 +10,7 @@ function Square(props) {
   );
 }
 
+
 class Board extends React.Component {
   constructor(props) {
     super(props);
@@ -132,45 +133,40 @@ class Board extends React.Component {
   render() {
     const winner = declareWinner(this.state.player1ClosedAll, this.state.player2ClosedAll, this.state.player1Score, this.state.player2Score);
 
-    return (
+    let board = [];
+
+    for (let i = 0; i < 6; i++) {
+      let row = [];
+      row.push(
+        <div>
+          {this.renderSquare(2*i)}
+          &emsp; {20 - i}
+          {this.renderSquare(2*i + 1)}
+        </div>
+      );
+
+      board.push(<div className='board-row'>{row}</div>);
+    }
+    for (let i = 6; i < 7; i++) {
+      let row = [];
+      row.push(
+        <div>
+          {this.renderSquare(2*i)}
+          &emsp; B
+          {this.renderSquare(2*i + 1)}
+        </div>
+      );
+
+      board.push(<div className='board-row'>{row}</div>)
+    }
+
+    return(
       <div>
         <div className="score">Player 1</div>
         <div className="score">Player 2</div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          &emsp; 20
-          {this.renderSquare(1)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(2)}
-          &emsp; 19
-          {this.renderSquare(3)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(4)}
-          &emsp; 18
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          &emsp; 17
-          {this.renderSquare(7)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(8)}
-          &emsp; 16
-          {this.renderSquare(9)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(10)}
-          &emsp; 15
-          {this.renderSquare(11)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(12)}
-          &emsp; B
-          {this.renderSquare(13)}
-        </div>
+
+        <div>{board}</div>
+
         <div className="score">
           {this.state.player1Score}
         </div>
@@ -184,6 +180,7 @@ class Board extends React.Component {
     );
   }
 }
+
 
 class Game extends React.Component {
   render() {
