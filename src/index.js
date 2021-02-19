@@ -96,7 +96,7 @@ class Board extends React.Component {
       let row = [];
 
       for (let j = 0; j < NUM_PLAYERS; j++) {
-        row.push(this.renderSquare(2*i + j));
+        row.push(this.renderSquare(NUM_PLAYERS*i + j));
       }
 
       let rowTag = 20 - i;
