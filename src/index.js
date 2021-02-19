@@ -40,51 +40,7 @@ class Board extends React.Component {
       squares[i] = "Ⓧ";
     }
     else {
-      if (i === 0 && squares[i + 1] !== "Ⓧ") {
-        scores[0] += 20;
-      }
-      else if (i === 1 && squares[i - 1] !== "Ⓧ") {
-        scores[1] += 20;
-      }
-      else if (i === 2 && squares[i + 1] !== "Ⓧ") {
-        scores[0] += 19;
-      }
-      else if (i === 3 && squares[i - 1] !== "Ⓧ") {
-        scores[1] += 19;
-      }
-      else if (i === 4 && squares[i + 1] !== "Ⓧ") {
-        scores[0] += 18;
-      }
-      else if (i === 5 && squares[i - 1] !== "Ⓧ") {
-        scores[1] += 18;
-      }
-      else if (i === 6 && squares[i + 1] !== "Ⓧ") {
-        scores[0] += 17;
-      }
-      else if (i === 7 && squares[i - 1] !== "Ⓧ") {
-        scores[1] += 17;
-      }
-      else if (i === 8 && squares[i + 1] !== "Ⓧ") {
-        scores[0] += 16;
-      }
-      else if (i === 9 && squares[i - 1] !== "Ⓧ") {
-        scores[1] += 16;
-      }
-      else if (i === 10 && squares[i + 1] !== "Ⓧ") {
-        scores[0] += 15;
-      }
-      else if (i === 11 && squares[i - 1] !== "Ⓧ") {
-        scores[1] += 15;
-      }
-      else if (i === 12 && squares[i + 1] !== "Ⓧ") {
-        scores[0] += 25;
-      }
-      else if (i === 13 && squares[i - 1] !== "Ⓧ") {
-        scores[1] += 25;
-      }
-      else {
-        console.log("Invalid cell clicked...how is this even possible??")
-      }
+      scores = getScores(scores, squares, i, NUM_PLAYERS);
     }
 
     // Probably refactor this...
@@ -198,6 +154,44 @@ ReactDOM.render(
   <Game />,
   document.getElementById('root')
 );
+
+
+function getScores(scores, squares, i, numPlayers) {
+  if (numPlayers === 2) {
+    return getScoresRegular(scores, squares, i);
+  }
+
+  return getScoresCutthroat(scores, squares, i, numPlayers);
+}
+
+
+function getScoresRegular(scores, squares, i) {
+  if (i % 2 === 0 && squares[i + 1] !== "Ⓧ") {
+    if (i === 12) {
+      scores[0] += 25;
+    }
+    else {
+      scores[0] += 20 - i/2;
+    }
+  }
+
+  if (i % 2 === 1 && squares[i - 1] !== "Ⓧ"){
+    if (i === 13) {
+      scores[1] += 25;
+    }
+    else {
+      scores[1] += 20 - (i - 1)/2;
+    }
+  }
+
+  return scores;
+}
+
+
+function getScoresCutthroat(scores, squares, i, numPlayers) {
+  // implementMe
+  return scores;
+}
 
 
 function declareWinner(closedAll, scores) {
