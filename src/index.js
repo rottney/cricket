@@ -14,7 +14,7 @@ function Square(props) {
 class Board extends React.Component {
   constructor(props) {
     super(props);
-    const NUM_PLAYERS = 2;  // will be provided...
+    const NUM_PLAYERS = 3  // will be provided...
     this.state = {
       squares: Array(7*NUM_PLAYERS).fill(null),
       scores: Array(NUM_PLAYERS).fill(0),
@@ -24,7 +24,7 @@ class Board extends React.Component {
   }
 
   handleClick(i) {
-    const NUM_PLAYERS = 2;  // I need to figure out how to refactor this...
+    const NUM_PLAYERS = 3;  // I need to figure out how to refactor this...
     const squares = this.state.squares.slice();
     let scores = this.state.scores;
     let closedAll = this.state.closedAll;
@@ -81,7 +81,7 @@ class Board extends React.Component {
 
   render() {
     // THIS WILL BE IN STATE
-    const NUM_PLAYERS = 2;
+    const NUM_PLAYERS = 3;
 
     // Generate team names
     let teamNames = [];
@@ -175,7 +175,7 @@ function getScoresRegular(scores, squares, i) {
     }
   }
 
-  if (i % 2 === 1 && squares[i - 1] !== "Ⓧ"){
+  else if (i % 2 === 1 && squares[i - 1] !== "Ⓧ"){
     if (i === 13) {
       scores[1] += 25;
     }
@@ -189,7 +189,20 @@ function getScoresRegular(scores, squares, i) {
 
 
 function getScoresCutthroat(scores, squares, i, numPlayers) {
-  // implementMe
+  let column = i % numPlayers;
+  let start = 0 - column;
+
+  for (let j = start; j < start + numPlayers; j++) {
+    if (i + j !== column && squares[i + j] !== "Ⓧ") {
+      if ((i + start)/numPlayers <= 5) {
+        scores[(i + j) % numPlayers] += 20 - (i + start)/numPlayers;
+      }
+      else {
+        scores[(i + j) % numPlayers] += 25;
+      }
+    }
+  }
+
   return scores;
 }
 
