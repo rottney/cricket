@@ -24,6 +24,7 @@ class Board extends React.Component {
   }
 
   handleClick(i) {
+    const NUM_PLAYERS = 2;  // I need to figure out how to refactor this...
     const squares = this.state.squares.slice();
     let scores = this.state.scores;
     let closedAll = this.state.closedAll;
@@ -135,29 +136,19 @@ class Board extends React.Component {
     // Generate board
     let board = [];
 
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 7; i++) {
       let row = [];
-      row.push(
-        <div>
-          {this.renderSquare(2*i)}
-          {this.renderSquare(2*i + 1)}
-          &emsp; {20 - i}
-        </div>
-      );
 
-      board.push(<div className="board-row">{row}</div>);
-    }
-    for (let i = 6; i < 7; i++) {
-      let row = [];
-      row.push(
-        <div>
-          {this.renderSquare(2*i)}
-          {this.renderSquare(2*i + 1)}
-          &emsp; B
-        </div>
-      );
+      for (let j = 0; j < NUM_PLAYERS; j++) {
+        row.push(this.renderSquare(2*i + j));
+      }
 
-      board.push(<div className="board-row">{row}</div>)
+      let rowTag = 20 - i;
+      if (rowTag === 14) {
+        rowTag = "B";
+      }
+
+      board.push(<div className="board-row">{row} &emsp; {rowTag}</div>);
     }
 
     // Generate scores
