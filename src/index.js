@@ -43,22 +43,7 @@ class Board extends React.Component {
       }
     }
 
-    // Probably refactor this...
-    closedAll[0] = true;
-    for (let i = 0; i <= 12; i += 2) {
-      if (squares[i] !== "Ⓧ") {
-        closedAll[0] = false;
-        i = 12;
-      }
-    }
-
-    closedAll[1] = true;
-    for (let i = 1; i <= 13; i += 2) {
-      if (squares[i] !== "Ⓧ") {
-        closedAll[1] = false;
-        i = 13;
-      }
-    }
+    closedAll[i % numPlayers] = didCloseAll(squares, i, numPlayers);
 
     this.setState(
       {
@@ -136,7 +121,7 @@ class Game extends React.Component {
       <div className="game">
         <div className="game-board">
           <Board 
-            numPlayers={2}
+            numPlayers={3}
           />
         </div>
         <div className="game-info">
@@ -228,6 +213,32 @@ function getWinnerRegular(closedAll, scores) {
 }
 
 function getWinnerCutthroat(closedAll, scores, numPlayers) {
-  // implementMe
+  for (let i = 0; i < numPlayers; i++) {
+    if (closedAll[i]) {
+      let iWon = true;
+      for (let j = 0; j < numPlayers; j++) {
+        if (i !== j) {
+          if (scores[j] < scores[i]) {
+            iWon = false;
+            j = numPlayers;
+          }
+        }
+      }
+      if (iWon) {
+        return "Player " + (i + 1).toString() + " wins.";
+      }
+    }
+  }
+
   return "";
+}
+
+function didCloseAll(squares, i, numPlayers) {
+  for (let j = i % numPlayers; j < 7*numPlayers; j+= numPlayers) {
+    if (squares[j] !== "Ⓧ") {
+      return false;
+    }
+  }
+
+  return true;
 }
