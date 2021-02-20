@@ -19,7 +19,7 @@ class Board extends React.Component {
       squares: Array(7*NUM_PLAYERS).fill(null),
       scores: Array(NUM_PLAYERS).fill(0),
       closedAll: Array(NUM_PLAYERS).fill(false),
-      won: Array(NUM_PLAYERS).fill(false),
+      gameOver: false,
     };
   }
 
@@ -28,19 +28,21 @@ class Board extends React.Component {
     const squares = this.state.squares.slice();
     let scores = this.state.scores;
     let closedAll = this.state.closedAll;
-    let won = this.state.won;
+    let gameOver = this.state.gameOver;
 
-    if (this.state.squares[i] === null) {
-      squares[i] = "/";
-    }
-    else if (this.state.squares[i] === "/") {
-      squares[i] = "X";
-    }
-    else if (this.state.squares[i] === "X") {
-      squares[i] = "Ⓧ";
-    }
-    else {
-      scores = getScores(scores, squares, i, NUM_PLAYERS);
+    if (declareWinner(closedAll, scores, NUM_PLAYERS, gameOver) === "") {
+      if (this.state.squares[i] === null) {
+        squares[i] = "/";
+      }
+      else if (this.state.squares[i] === "/") {
+        squares[i] = "X";
+      }
+      else if (this.state.squares[i] === "X") {
+        squares[i] = "Ⓧ";
+      }
+      else {
+        scores = getScores(scores, squares, i, NUM_PLAYERS);
+      }
     }
 
     // Probably refactor this...
@@ -65,7 +67,6 @@ class Board extends React.Component {
         squares: squares,
         scores: scores,
         closedAll: closedAll,
-        won: won,
       }
     );
   }
@@ -116,7 +117,7 @@ class Board extends React.Component {
     // Determine winner
     const winner = (
       <div className="status">
-        {declareWinner(this.state.closedAll, this.state.scores)}
+        {declareWinner(this.state.closedAll, this.state.scores, NUM_PLAYERS, this.state.gameOver)}
       </div>
     );
 
@@ -207,8 +208,19 @@ function getScoresCutthroat(scores, squares, i, numPlayers) {
 }
 
 
-function declareWinner(closedAll, scores) {
-  // ONLY WORKS FOR 2 PLAYERS NOW
+function declareWinner(closedAll, scores, numPlayers, gameOver) {
+  if (gameOver) {
+    return "";
+  }
+
+  if (numPlayers === 2) {
+    return getWinnerRegular(closedAll, scores);
+  }
+
+  return getWinnerCutthroat(closedAll, scores, numPlayers);
+}
+
+function getWinnerRegular(closedAll, scores) {
   if (closedAll[0] && scores[0] >= scores[1]) {
     return "Player 1 wins.";
   }
@@ -217,5 +229,10 @@ function declareWinner(closedAll, scores) {
     return "Player 2 wins.";
   }
 
+  return "";
+}
+
+function getWinnerCutthroat(closedAll, scores, numPlayers) {
+  // implementMe
   return "";
 }
