@@ -19,7 +19,6 @@ class Board extends React.Component {
       squares: Array(7*props.numPlayers).fill(null),
       scores: Array(props.numPlayers).fill(0),
       closedAll: Array(props.numPlayers).fill(false),
-      gameOver: false,
     };
   }
 
@@ -28,9 +27,8 @@ class Board extends React.Component {
     const squares = this.state.squares.slice();
     let scores = this.state.scores;
     let closedAll = this.state.closedAll;
-    let gameOver = this.state.gameOver;
 
-    if (declareWinner(closedAll, scores, numPlayers, gameOver) === "") {
+    if (declareWinner(closedAll, scores, numPlayers) === "") {
       if (this.state.squares[i] === null) {
         squares[i] = "/";
       }
@@ -81,7 +79,6 @@ class Board extends React.Component {
   }
 
   render() {
-    // THIS WILL BE IN STATE
     const numPlayers = this.state.numPlayers;
 
     // Generate team names
@@ -117,7 +114,7 @@ class Board extends React.Component {
     // Determine winner
     const winner = (
       <div className="status">
-        {declareWinner(this.state.closedAll, this.state.scores, numPlayers, this.state.gameOver)}
+        {declareWinner(this.state.closedAll, this.state.scores, numPlayers)}
       </div>
     );
 
@@ -139,7 +136,7 @@ class Game extends React.Component {
       <div className="game">
         <div className="game-board">
           <Board 
-            numPlayers={3}
+            numPlayers={2}
           />
         </div>
         <div className="game-info">
@@ -210,11 +207,7 @@ function getScoresCutthroat(scores, squares, i, numPlayers) {
 }
 
 
-function declareWinner(closedAll, scores, numPlayers, gameOver) {
-  if (gameOver) {
-    return "";
-  }
-
+function declareWinner(closedAll, scores, numPlayers) {
   if (numPlayers === 2) {
     return getWinnerRegular(closedAll, scores);
   }
