@@ -14,23 +14,23 @@ function Square(props) {
 class Board extends React.Component {
   constructor(props) {
     super(props);
-    const NUM_PLAYERS = 3  // will be provided...
     this.state = {
-      squares: Array(7*NUM_PLAYERS).fill(null),
-      scores: Array(NUM_PLAYERS).fill(0),
-      closedAll: Array(NUM_PLAYERS).fill(false),
+      numPlayers: props.numPlayers,
+      squares: Array(7*props.numPlayers).fill(null),
+      scores: Array(props.numPlayers).fill(0),
+      closedAll: Array(props.numPlayers).fill(false),
       gameOver: false,
     };
   }
 
   handleClick(i) {
-    const NUM_PLAYERS = 3;  // I need to figure out how to refactor this...
+    const numPlayers = this.state.numPlayers;
     const squares = this.state.squares.slice();
     let scores = this.state.scores;
     let closedAll = this.state.closedAll;
     let gameOver = this.state.gameOver;
 
-    if (declareWinner(closedAll, scores, NUM_PLAYERS, gameOver) === "") {
+    if (declareWinner(closedAll, scores, numPlayers, gameOver) === "") {
       if (this.state.squares[i] === null) {
         squares[i] = "/";
       }
@@ -41,7 +41,7 @@ class Board extends React.Component {
         squares[i] = "Ⓧ";
       }
       else {
-        scores = getScores(scores, squares, i, NUM_PLAYERS);
+        scores = getScores(scores, squares, i, numPlayers);
       }
     }
 
@@ -82,11 +82,11 @@ class Board extends React.Component {
 
   render() {
     // THIS WILL BE IN STATE
-    const NUM_PLAYERS = 3;
+    const numPlayers = this.state.numPlayers;
 
     // Generate team names
     let teamNames = [];
-    for (let i = 1; i <= NUM_PLAYERS; i++) {
+    for (let i = 1; i <= numPlayers; i++) {
       teamNames.push(<div className="score">Player {i}</div>);
     }
 
@@ -96,8 +96,8 @@ class Board extends React.Component {
     for (let i = 0; i < 7; i++) {
       let row = [];
 
-      for (let j = 0; j < NUM_PLAYERS; j++) {
-        row.push(this.renderSquare(NUM_PLAYERS*i + j));
+      for (let j = 0; j < numPlayers; j++) {
+        row.push(this.renderSquare(numPlayers*i + j));
       }
 
       let rowTag = 20 - i;
@@ -110,14 +110,14 @@ class Board extends React.Component {
 
     // Generate scores
     let scores = [];
-    for (let i = 0; i < NUM_PLAYERS; i++) {
+    for (let i = 0; i < numPlayers; i++) {
       scores.push(<div className="score">{this.state.scores[i]}</div>)
     }
 
     // Determine winner
     const winner = (
       <div className="status">
-        {declareWinner(this.state.closedAll, this.state.scores, NUM_PLAYERS, this.state.gameOver)}
+        {declareWinner(this.state.closedAll, this.state.scores, numPlayers, this.state.gameOver)}
       </div>
     );
 
@@ -138,7 +138,9 @@ class Game extends React.Component {
     return (
       <div className="game">
         <div className="game-board">
-          <Board />
+          <Board 
+            numPlayers={3}
+          />
         </div>
         <div className="game-info">
           <div>{/* status */}</div>
