@@ -8,26 +8,30 @@ class Board extends React.Component {
     super(props);
     this.state = {
       numPlayers: props.numPlayers,
-      squares: Array(7*props.numPlayers).fill(null),
-      scores: Array(props.numPlayers).fill(0),
-      closedAll: Array(props.numPlayers).fill(false),
+      history: [{
+        squares: Array(7*props.numPlayers).fill(null),
+        scores: Array(props.numPlayers).fill(0),
+        closedAll: Array(props.numPlayers).fill(false),
+      }],
     };
   }
 
   handleClick(i) {
+    const history = this.state.history;
+    const current = history[history.length - 1];
     const numPlayers = this.state.numPlayers;
-    const squares = this.state.squares.slice();
-    let scores = this.state.scores;
-    let closedAll = this.state.closedAll;
+    let squares = current.squares.slice();
+    let scores = current.scores.slice();
+    let closedAll = current.closedAll.slice();
 
     if (declareWinner(closedAll, scores, numPlayers) === "") {
-      if (this.state.squares[i] === null) {
+      if (squares[i] === null) {
         squares[i] = "/";
       }
-      else if (this.state.squares[i] === "/") {
+      else if (squares[i] === "/") {
         squares[i] = "X";
       }
-      else if (this.state.squares[i] === "X") {
+      else if (squares[i] === "X") {
         squares[i] = "Ⓧ";
       }
       else {
@@ -39,17 +43,41 @@ class Board extends React.Component {
 
     this.setState(
       {
-        squares: squares,
-        scores: scores,
-        closedAll: closedAll,
+        history: history.concat({
+          squares: squares,
+          scores: scores,
+          closedAll: closedAll,
+        }),
       }
     );
   }
 
+  undo() {
+    const history = this.state.history;
+
+    this.setState({
+      history: history.slice(0, history.length - 1),
+    });
+  }
+
+  renderUndoButton() {
+    if (this.state.history.length > 1) {
+      return (
+        <button onClick={() => this.undo()}>
+          Undo last step
+        </button>
+      );
+    }
+  }
+
   renderSquare(i) {
+    const history = this.state.history;  // think i need 2 lift this up...
+    const current = history[history.length - 1];
+    const squares = current.squares;
+
     return (
       <Square 
-        value={this.state.squares[i]}
+        value={squares[i]}
         onClick={() => this.handleClick(i)}
       />
     );
@@ -57,6 +85,10 @@ class Board extends React.Component {
 
   render() {
     const numPlayers = this.state.numPlayers;
+    const history = this.state.history;  // think i need 2 lift this up...
+    const current = history[history.length - 1];
+    const myScores = current.scores;
+    const closedAll = current.closedAll;
 
     // Generate team names
     let teamNames = [];
@@ -85,13 +117,13 @@ class Board extends React.Component {
     // Generate scores
     let scores = [];
     for (let i = 0; i < numPlayers; i++) {
-      scores.push(<div className="score">{this.state.scores[i]}</div>)
+      scores.push(<div className="score">{myScores[i]}</div>)
     }
 
     // Determine winner
     const winner = (
       <div className="status">
-        {declareWinner(this.state.closedAll, this.state.scores, numPlayers)}
+        {declareWinner(closedAll, myScores, numPlayers)}
       </div>
     );
 
@@ -100,6 +132,7 @@ class Board extends React.Component {
         <div>{teamNames}</div>
         <div>{board}</div>
         <div>{scores}</div>
+        <div>{this.renderUndoButton()}</div>
         <div>{winner}</div>
       </div>
     );
