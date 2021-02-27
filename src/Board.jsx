@@ -68,6 +68,25 @@ class Board extends React.Component {
         </button>
       );
     }
+    else {
+      return <p></p>;
+    }
+  }
+
+  newGame() {
+    let newGame = window.confirm("Are you sure you want to start a new game?  "
+      + "Your progress will not be saved.");
+    if (newGame) {
+      window.location.reload()
+    }
+  }
+
+  renderNewGameButton() {
+    return (
+      <button onClick={() => this.newGame()}>
+        Start new game
+      </button>
+    );
   }
 
   renderSquare(i) {
@@ -130,6 +149,9 @@ class Board extends React.Component {
       </div>
     );
 
+    // New game button
+    const newGameButton = this.renderNewGameButton();
+
     return(
       <div>
         <div>{teamNames}</div>
@@ -137,6 +159,7 @@ class Board extends React.Component {
         <div>{scores}</div>
         <div>{undoButton}</div>
         <div>{winner}</div>
+        <div>{newGameButton}</div>
       </div>
     );
   }

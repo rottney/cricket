@@ -54,11 +54,6 @@ ol, ul {
   flex-direction: row;
 }
 
-.game-info {
-  margin-left: 20px;
-}
-
-
 /* Dropdown Button */
 .dropbtn {
   background-color: #f4511e;
