@@ -120,6 +120,9 @@ class Board extends React.Component {
       scores.push(<div className="score">{myScores[i]}</div>)
     }
 
+    // Undo button
+    const undoButton = this.renderUndoButton();
+
     // Determine winner
     const winner = (
       <div className="status">
@@ -132,7 +135,7 @@ class Board extends React.Component {
         <div>{teamNames}</div>
         <div>{board}</div>
         <div>{scores}</div>
-        <div>{this.renderUndoButton()}</div>
+        <div>{undoButton}</div>
         <div>{winner}</div>
       </div>
     );
@@ -234,6 +237,7 @@ function getWinnerCutthroat(closedAll, scores, numPlayers) {
 
   return "";
 }
+
 
 function didCloseAll(squares, i, numPlayers) {
   for (let j = i % numPlayers; j < 7*numPlayers; j+= numPlayers) {
