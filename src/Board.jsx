@@ -157,8 +157,8 @@ class Board extends React.Component {
         <div>{teamNames}</div>
         <div>{board}</div>
         <div>{scores}</div>
-        <div>{undoButton}</div>
         <div>{winner}</div>
+        <div>{undoButton}</div>
         <div>{newGameButton}</div>
       </div>
     );
